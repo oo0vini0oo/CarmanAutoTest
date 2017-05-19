@@ -158,7 +158,7 @@ public class ExampleInstrumentedTest {
         }
     }
     /**
-     * 如果没有登录，就用17700000000账号登录
+     * 如果没有登录，就用15971130771账号登录
      * @return
      */
     public void login() throws Exception
@@ -170,7 +170,7 @@ public class ExampleInstrumentedTest {
         {
             tv_nick_name.click();
             UiObject et_phone = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/et_phone"));
-            et_phone.setText("17700000000");
+            et_phone.setText("15971130771");
             UiObject btn_get = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/btn_get"));
             btn_get.click();
 
@@ -184,32 +184,44 @@ public class ExampleInstrumentedTest {
 
         }
         mDevice.pressBack();
+        mDevice.waitForIdle(2000);
     }
 
 
-    public void clickByResourceId(String resId) throws  Exception
+    public void clickByResourceId(String resId)
     {
-        UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
-        //点击音乐
-        uiObject.waitForExists(6000);//等待按钮显示出来
-        uiObject.click();
-    }
-
-    public UiObject clickByText(String text) throws  Exception
-    {
-        UiObject uiObject = mDevice.findObject(new UiSelector().text(text));
-        //点击音乐
-        uiObject.waitForExists(6000);//等待按钮显示出来
-        uiObject.click();
-        return  uiObject;
-    }
-    public UiObject clickByTextIfExists(String text) throws  Exception
-    {
-        UiObject uiObject = mDevice.findObject(new UiSelector().text(text));
-
-        if(uiObject.waitForExists(3000))
+        try{
+            UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
+            //点击音乐
+            uiObject.waitForExists(6000);//等待按钮显示出来
             uiObject.click();
-        return  uiObject;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public UiObject clickByText(String text) {
+        UiObject uiObject = null;
+        try {
+            uiObject = mDevice.findObject(new UiSelector().text(text));
+            //点击音乐
+            uiObject.waitForExists(6000);//等待按钮显示出来
+            uiObject.click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return uiObject;
+    }
+    public UiObject clickByTextIfExists(String text) {
+        UiObject uiObject = null;
+        try {
+            uiObject = mDevice.findObject(new UiSelector().text(text));
+            if (uiObject.waitForExists(3000))
+                uiObject.click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return uiObject;
     }
 
     public  void clickByResIdIfExists(String resId) throws  Exception
@@ -224,7 +236,12 @@ public class ExampleInstrumentedTest {
         goHomePage();
         login();
         //点击音乐
-        clickByResourceId("net.easyconn.carman:id/rl_cover_default");
+        if (mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/rl_cover_album")).exists()){
+        clickByResourceId("net.easyconn.carman:id/rl_cover_album");
+        }else{
+            clickByResourceId("net.easyconn.carman:id/rl_cover_default");
+        }
+
         mDevice.waitForIdle(3000);
         clickByResIdIfExists("net.easyconn.carman:id/img_know");
         //点击乐库
@@ -259,7 +276,7 @@ public class ExampleInstrumentedTest {
 
 
 
-    @Test
+//    @Test
     public void addition_isCorrect() throws Exception {
 
         UiObject iv_music_play_pause = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/iv_music_play_pause"));

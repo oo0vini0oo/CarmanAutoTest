@@ -170,11 +170,12 @@ public class TestBase {
 
 
             UiObject et_verification_code = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/et_verification_code"));
-            et_verification_code.setText("567149");
+            et_verification_code.setText("884569");
             UiObject btn_login = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/btn_login"));
             btn_login.click();
 
         }
+        Thread.sleep(1000);
         mDevice.pressBack();
         mDevice.waitForIdle(2000);
     }
@@ -187,7 +188,18 @@ public class TestBase {
         UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
         uiObject.waitForExists(6000);//等待按钮显示出来
         uiObject.click();
+        Thread.sleep(1000);
+    }
 
+    /**
+     * 根据ResourceId长按
+     * */
+    public void longClickByResourceId(String resId) throws Exception
+    {
+        UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
+        uiObject.waitForExists(6000);//等待按钮显示出来
+        uiObject.longClick();
+        Thread.sleep(1000);
     }
 
     /**
@@ -210,6 +222,7 @@ public class TestBase {
         uiObject = mDevice.findObject(new UiSelector().text(text));
         uiObject.waitForExists(6000);//等待按钮显示出来
         uiObject.click();
+        Thread.sleep(1000);
         return uiObject;
     }
 
@@ -221,6 +234,7 @@ public class TestBase {
         uiObject = mDevice.findObject(new UiSelector().text(text));
         if (uiObject.waitForExists(3000)) {
             uiObject.click();
+            Thread.sleep(1000);
         }
         return uiObject;
     }
@@ -234,6 +248,48 @@ public class TestBase {
         if(img_know.exists()){
             img_know.click();
         }
+        Thread.sleep(1000);
     }
+
+    int steps = 20;
+    /**
+     * 上滑
+     */
+    public void swipeToUp() throws InterruptedException {
+        int width= mDevice.getDisplayWidth();
+        int height=mDevice.getDisplayHeight();
+        mDevice.swipe(width/2,height*3/4,width/2,height/4,steps);
+        Thread.sleep(1000);
+    }
+
+    /**
+     * 下滑
+     */
+    public void swipeToDown() throws InterruptedException {
+        int width= mDevice.getDisplayWidth();
+        int height=mDevice.getDisplayHeight();
+        mDevice.swipe(width/2,height*1/4,width/2,height*3/4,steps);
+        Thread.sleep(1000);
+    }
+
+    /**
+     * 左滑
+     */
+    public void swipeToLeft() throws InterruptedException {
+        int width= mDevice.getDisplayWidth();
+        int height=mDevice.getDisplayHeight();
+        mDevice.swipe(width*3/4,height/2,width/4,height/2,steps);
+        Thread.sleep(1000);
+    }
+    /**
+     * 右滑
+     */
+    public void swipeToRight() throws InterruptedException {
+        int width= mDevice.getDisplayWidth();
+        int height=mDevice.getDisplayHeight();
+        mDevice.swipe(width/4,height/2,width*3/4,height/2,steps);
+        Thread.sleep(1000);
+    }
+
 
 }

@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class MusicTest extends TestBase {
+public class TestMusic extends TestBase {
 
     /**
      * 测试准备工作

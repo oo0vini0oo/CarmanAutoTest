@@ -166,7 +166,7 @@ public class TestBase {
             UiObject btn_get = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/btn_get"));
             btn_get.click();
 
-            Thread.sleep(1000);
+            Thread.sleep(1500);
 
 
             UiObject et_verification_code = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/et_verification_code"));
@@ -175,9 +175,7 @@ public class TestBase {
             btn_login.click();
 
         }
-        Thread.sleep(1000);
-        mDevice.pressBack();
-        mDevice.waitForIdle(2000);
+        Thread.sleep(1500);
     }
 
     /**
@@ -188,7 +186,7 @@ public class TestBase {
         UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
         uiObject.waitForExists(6000);//等待按钮显示出来
         uiObject.click();
-        Thread.sleep(1000);
+        Thread.sleep(1500);
     }
 
     /**
@@ -199,7 +197,7 @@ public class TestBase {
         UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
         uiObject.waitForExists(6000);//等待按钮显示出来
         uiObject.longClick();
-        Thread.sleep(1000);
+        Thread.sleep(1500);
     }
 
     /**
@@ -222,7 +220,7 @@ public class TestBase {
         uiObject = mDevice.findObject(new UiSelector().text(text));
         uiObject.waitForExists(6000);//等待按钮显示出来
         uiObject.click();
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         return uiObject;
     }
 
@@ -234,7 +232,7 @@ public class TestBase {
         uiObject = mDevice.findObject(new UiSelector().text(text));
         if (uiObject.waitForExists(3000)) {
             uiObject.click();
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         }
         return uiObject;
     }
@@ -248,7 +246,7 @@ public class TestBase {
         if(img_know.exists()){
             img_know.click();
         }
-        Thread.sleep(1000);
+        Thread.sleep(1500);
     }
 
     int steps = 20;

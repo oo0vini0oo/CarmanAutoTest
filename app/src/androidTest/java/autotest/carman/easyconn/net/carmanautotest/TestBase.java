@@ -14,11 +14,12 @@ import android.util.Log;
 
 import org.hamcrest.core.IsNull;
 import org.junit.Assert;
-import org.junit.Before;
+
 
 /**
  * Created by wwl on 2017/5/23.
- */
+ * 测试方法的公共类，所有测试类继承此类
+ * */
 
 public class TestBase {
 
@@ -31,6 +32,9 @@ public class TestBase {
     protected static final String STRING_TO_BE_TYPED = "UiAutomator";
     protected UiDevice mDevice;
 
+    /**
+     * 初始化获取设备
+     * */
     public void initDevice()
     {
         // Initialize UiDevice instance
@@ -44,6 +48,9 @@ public class TestBase {
         }
     }
 
+    /**
+     * 启动应用
+     * */
     public void startMainActivityFromHomeScreen() {
         initDevice();
         // Start from the home screen
@@ -80,67 +87,12 @@ public class TestBase {
         }
 
     }
-    public void clickByResourceId(String resId)
-    {
-        try{
-            UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
-            //点击音乐
-            uiObject.waitForExists(6000);//等待按钮显示出来
-            uiObject.click();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+
 
     /**
-     * 判断文本是否存在
-     * */
-    public boolean findByText(String Text){
-        UiObject text = mDevice.findObject(new UiSelector().text(Text));
-        if(text.waitForExists(1000) && text.exists()) {
-            return true;
-        }
-        return false;
-    }
-
-
-
-    public UiObject clickByText(String text) {
-        UiObject uiObject = null;
-        try {
-            uiObject = mDevice.findObject(new UiSelector().text(text));
-            //点击音乐
-            uiObject.waitForExists(6000);//等待按钮显示出来
-            uiObject.click();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return uiObject;
-    }
-    public UiObject clickByTextIfExists(String text) {
-        UiObject uiObject = null;
-        try {
-            uiObject = mDevice.findObject(new UiSelector().text(text));
-            if (uiObject.waitForExists(3000))
-                uiObject.click();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return uiObject;
-    }
-
-    public  void clickByResIdIfExists(String resId) throws  Exception
-    {
-        UiObject img_know = mDevice.findObject(new UiSelector().resourceId(resId));
-        if(img_know.exists()){
-            img_know.click();
-        }
-
-    }
-
-
-
-    //自动判断是否存在权限框，if存在点击确认框点击，else return false
+     * 不用单独调用此方法
+     * 自动判断是否存在权限框，if存在点击确认框点击，else return false
+     */
     protected boolean permission_allow()
     {
         UiObject permission_allow_button = mDevice.findObject(new UiSelector().resourceId("com.android.packageinstaller:id/permission_allow_button"));
@@ -158,8 +110,8 @@ public class TestBase {
 
 
 
-    /** 启动应用后，判断权限框是否弹出，弹出调用permission_allow方法。
-     *
+    /**
+     * 启动应用后，判断权限框是否弹出，弹出调用permission_allow方法。
      * 选择不再提示框
      * 点击确认按钮
      */
@@ -172,8 +124,6 @@ public class TestBase {
         {
             Thread.sleep(1000);
         }
-
-
         UiObject tv_skip = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/tv_skip"));
         mDevice.waitForIdle(3000);
         //判断是否有跳过按钮
@@ -182,7 +132,6 @@ public class TestBase {
             Log.d(TAG, "tv_skip button click .....");
             tv_skip.click();
         }
-
         UiObject cb_statement_status = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/cb_statement_status"));
         mDevice.waitForIdle(3000);
         if(cb_statement_status.waitForExists(1000) && cb_statement_status.exists())
@@ -198,8 +147,10 @@ public class TestBase {
             statement_ok.click();
         }
     }
+
     /**
-     * 如果没有登录，就用15971130771账号登录
+     * 登录方法
+     * 如果没有登录，就用15971130771账号登录，然后返回主页
      * @return
      */
     public void login() throws Exception
@@ -227,4 +178,62 @@ public class TestBase {
         mDevice.pressBack();
         mDevice.waitForIdle(2000);
     }
+
+    /**
+     * 根据ResourceId点击
+     * */
+    public void clickByResourceId(String resId) throws Exception
+    {
+        UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
+        uiObject.waitForExists(6000);//等待按钮显示出来
+        uiObject.click();
+
+    }
+
+    /**
+     * 判断文本是否存在
+     * */
+    public boolean findByText(String Text){
+        UiObject text = mDevice.findObject(new UiSelector().text(Text));
+        if(text.waitForExists(1000) && text.exists()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 根据text字段来点击
+     * */
+
+    public UiObject clickByText(String text) throws Exception{
+        UiObject uiObject = null;
+        uiObject = mDevice.findObject(new UiSelector().text(text));
+        uiObject.waitForExists(6000);//等待按钮显示出来
+        uiObject.click();
+        return uiObject;
+    }
+
+    /**
+     * 根据text字段判断是否存在，存在则点击
+     * */
+    public UiObject clickByTextIfExists(String text) throws Exception{
+        UiObject uiObject = null;
+        uiObject = mDevice.findObject(new UiSelector().text(text));
+        if (uiObject.waitForExists(3000)) {
+            uiObject.click();
+        }
+        return uiObject;
+    }
+
+    /**
+     * 根据resourceId字段判断是否存在，存在则点击
+     * */
+    public  void clickByResIdIfExists(String resId) throws  Exception
+    {
+        UiObject img_know = mDevice.findObject(new UiSelector().resourceId(resId));
+        if(img_know.exists()){
+            img_know.click();
+        }
+    }
+
 }

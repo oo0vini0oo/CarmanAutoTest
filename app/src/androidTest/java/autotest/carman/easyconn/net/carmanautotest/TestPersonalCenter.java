@@ -1,6 +1,7 @@
 package autotest.carman.easyconn.net.carmanautotest;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 
 import org.junit.Before;

@@ -119,7 +119,6 @@ public class TestBase {
     {
         Log.d(TAG, "waitForIdle.....");
         mDevice.waitForIdle(3000);
-
         while (permission_allow())
         {
             Thread.sleep(1000);
@@ -157,6 +156,7 @@ public class TestBase {
     {
         UiObject id_home_main_user =mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/id_home_main_user"));
         id_home_main_user.click();
+        Log.d(TAG,"net.easyconn.carman:id/id_home_main_user");
         UiObject tv_nick_name = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/tv_nick_name"));
         if("登录/注册".equals(tv_nick_name.getText()))
         {
@@ -187,6 +187,7 @@ public class TestBase {
         uiObject.waitForExists(6000);//等待按钮显示出来
         uiObject.click();
         Thread.sleep(1500);
+        Log.d(TAG,"clickByResourceId()->resId:"+resId);
     }
 
     /**
@@ -196,20 +197,11 @@ public class TestBase {
     {
         UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
         uiObject.waitForExists(6000);//等待按钮显示出来
+        Log.d(TAG,"longClickByResourceId()->resId:"+resId);
         uiObject.longClick();
         Thread.sleep(1500);
     }
 
-    /**
-     * 判断文本是否存在
-     * */
-    public boolean findByText(String Text){
-        UiObject text = mDevice.findObject(new UiSelector().text(Text));
-        if(text.waitForExists(1000) && text.exists()) {
-            return true;
-        }
-        return false;
-    }
 
     /**
      * 根据text字段来点击
@@ -219,9 +211,11 @@ public class TestBase {
         UiObject uiObject = null;
         uiObject = mDevice.findObject(new UiSelector().text(text));
         uiObject.waitForExists(6000);//等待按钮显示出来
+        Log.d(TAG,"clickByText()->text:"+text);
         uiObject.click();
         Thread.sleep(1500);
         return uiObject;
+
     }
 
     /**
@@ -231,8 +225,11 @@ public class TestBase {
         UiObject uiObject = null;
         uiObject = mDevice.findObject(new UiSelector().text(text));
         if (uiObject.waitForExists(3000)) {
+            Log.d(TAG,"clickByTextExists()-->text:"+text);
             uiObject.click();
             Thread.sleep(1500);
+        }else {
+            Log.d(TAG,"clickByTextNOExists()-->text:"+text);
         }
         return uiObject;
     }
@@ -244,7 +241,10 @@ public class TestBase {
     {
         UiObject img_know = mDevice.findObject(new UiSelector().resourceId(resId));
         if(img_know.exists()){
+            Log.d(TAG,"clickByResIdExists()->resId:"+resId);
             img_know.click();
+        }else {
+            Log.d(TAG,"clickByResIdNoExists()->text:"+resId);
         }
         Thread.sleep(1500);
     }
@@ -256,6 +256,7 @@ public class TestBase {
     public void swipeToUp() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
+        Log.d(TAG,"swipeToUp()------------------>");
         mDevice.swipe(width/2,height*3/4,width/2,height/4,steps);
         Thread.sleep(1000);
     }
@@ -266,6 +267,7 @@ public class TestBase {
     public void swipeToDown() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
+        Log.d(TAG,"swipeToDown()------------------>");
         mDevice.swipe(width/2,height*1/4,width/2,height*3/4,steps);
         Thread.sleep(1000);
     }
@@ -276,6 +278,7 @@ public class TestBase {
     public void swipeToLeft() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
+        Log.d(TAG,"swipeToLeft()------------------>");
         mDevice.swipe(width*3/4,height/2,width/4,height/2,steps);
         Thread.sleep(1000);
     }
@@ -285,6 +288,7 @@ public class TestBase {
     public void swipeToRight() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
+        Log.d(TAG,"swipeToRight()------------------>");
         mDevice.swipe(width/4,height/2,width*3/4,height/2,steps);
         Thread.sleep(1000);
     }

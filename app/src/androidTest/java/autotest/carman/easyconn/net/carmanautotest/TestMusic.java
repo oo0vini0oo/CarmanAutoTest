@@ -28,25 +28,31 @@ public class TestMusic extends TestBase {
         initDevice();
         startMainActivityFromHomeScreen();
         goHomePage();
+        login();
+        mDevice.pressBack();
     }
 
     @Test
-    public void chekSwipUp() throws Exception{
-        if (mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/rl_cover_album")).exists()){
-            clickByResourceId("net.easyconn.carman:id/rl_cover_album");
-        }else{
-            clickByResourceId("net.easyconn.carman:id/rl_cover_default");
-        }
-        mDevice.waitForIdle(3000);
+    public void testCheckSwip() throws Exception{
+        clickByResIdIfExists("net.easyconn.carman:id/rl_cover_album");
+        Thread.sleep(2000);
         clickByResIdIfExists("net.easyconn.carman:id/img_know");
         //点击乐库
         clickByResIdIfExists("net.easyconn.carman:id/tv_more");
+        swipeToUp();
+        Thread.sleep(2000);
+        swipeToDown();
+        mDevice.pressBack();
+        Thread.sleep(2000);
+        mDevice.pressBack();
+        Thread.sleep(2000);
+
     }
 
-    //@Test
+    @Test
     public void checkMusicCollection() throws Exception
     {
-        login();
+
         //点击音乐
         if (mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/rl_cover_album")).exists()){
             clickByResourceId("net.easyconn.carman:id/rl_cover_album");
@@ -55,8 +61,7 @@ public class TestMusic extends TestBase {
         clickByResIdIfExists("net.easyconn.carman:id/img_know");
         //点击乐库
         clickByResIdIfExists("net.easyconn.carman:id/tv_more");
-        swipeToUp();
-        Thread.sleep(10000);
+        Thread.sleep(1000);
         //点击收藏
         clickByText("收藏");
         Thread.sleep(1000);

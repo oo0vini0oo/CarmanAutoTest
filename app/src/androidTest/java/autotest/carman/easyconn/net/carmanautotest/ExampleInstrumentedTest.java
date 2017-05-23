@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
  * 用来做专项测试
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest extends  TestBase{
+public class ExampleInstrumentedTest extends TestBase{
     /**
      * 测试准备工作
      * 连接设备、启动应用
@@ -35,11 +35,13 @@ public class ExampleInstrumentedTest extends  TestBase{
         //呼出语音助手
         int maxCnt =200;
         UiObject iv_voice_new = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/iv_voice_new"));
+
         while (maxCnt-- >0){
             iv_voice_new.click();
             Log.d(TAG, " iv_voice_new click .....");
             System.out.print(maxCnt);
-            mDevice.waitForIdle(3000);
+            Thread.sleep(2000);
+            mDevice.waitForIdle(2000);
             mDevice.pressBack();
         }
 

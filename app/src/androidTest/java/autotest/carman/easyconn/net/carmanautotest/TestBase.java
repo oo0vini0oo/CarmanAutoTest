@@ -29,13 +29,16 @@ public class TestBase {
             = "net.easyconn.carman";
     protected Context mContext;
     protected static final int LAUNCH_TIMEOUT = 5000;
+    protected static final int LONG_WAIT = 2000;
+    protected static final int SHORT_WAIT= 1500;
+    private int steps = 20;
     protected static final String STRING_TO_BE_TYPED = "UiAutomator";
     protected UiDevice mDevice;
 
     /**
      * 初始化获取设备
      * */
-    public void initDevice()
+     void initDevice()
     {
         // Initialize UiDevice instance
         while (mDevice == null) {
@@ -51,7 +54,7 @@ public class TestBase {
     /**
      * 启动应用
      * */
-    public void startMainActivityFromHomeScreen() {
+     void startMainActivityFromHomeScreen() {
         initDevice();
         // Start from the home screen
         mDevice.pressHome();
@@ -115,7 +118,7 @@ public class TestBase {
      * 选择不再提示框
      * 点击确认按钮
      */
-    public void goHomePage() throws  Exception
+     void goHomePage() throws  Exception
     {
         Log.d(TAG, "waitForIdle.....");
         mDevice.waitForIdle(3000);
@@ -150,13 +153,12 @@ public class TestBase {
     /**
      * 登录方法
      * 如果没有登录，就用15971130771账号登录，然后返回主页
-     * @return
      */
-    public void login() throws Exception
+     void login() throws Exception
     {
         UiObject id_home_main_user =mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/id_home_main_user"));
-        id_home_main_user.click();
         Log.d(TAG,"net.easyconn.carman:id/id_home_main_user");
+        id_home_main_user.click();
         UiObject tv_nick_name = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/tv_nick_name"));
         if("登录/注册".equals(tv_nick_name.getText()))
         {
@@ -181,13 +183,13 @@ public class TestBase {
     /**
      * 根据ResourceId点击
      * */
-    public void clickByResourceId(String resId) throws Exception
+     void clickByResourceId(String resId) throws Exception
     {
         UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
         uiObject.waitForExists(6000);//等待按钮显示出来
+        Log.d(TAG,"clickByResourceId()->resId:"+resId);
         uiObject.click();
         Thread.sleep(1500);
-        Log.d(TAG,"clickByResourceId()->resId:"+resId);
     }
 
     /**
@@ -202,12 +204,39 @@ public class TestBase {
         Thread.sleep(1500);
     }
 
+    /**
+     * 通过id查找并返回开关状态
+     * */
+    boolean findByResourceIdAndIsChecked(String resId) throws Exception{
+        UiObject object=mDevice.findObject(new UiSelector().resourceId(resId));
+        return object.exists() && object.isChecked();
+    }
+
+    /**
+     * 通过ID判断控件是否存在，点击控件，并判断控件状态是否改变
+     * */
+    void assertCheckButton(String resId) throws Exception {
+        UiObject object=mDevice.findObject(new UiSelector().resourceId(resId));
+        if (object.exists()) {
+            if (object.isChecked()) {
+                clickByResourceId(resId);
+                Thread.sleep(2000);
+                Assert.assertFalse(resId+"关闭", object.isChecked());
+                Log.d(TAG,"assertCheckButton:"+resId +"---------关闭");
+            } else {
+                clickByResourceId(resId);
+                Thread.sleep(2000);
+                Assert.assertTrue(resId+"打开", object.isChecked());
+                Log.d(TAG,"assertCheckButton:"+resId +"---------打开");
+            }
+        }
+    }
 
     /**
      * 根据text字段来点击
      * */
 
-    public UiObject clickByText(String text) throws Exception{
+    UiObject clickByText(String text) throws Exception{
         UiObject uiObject = null;
         uiObject = mDevice.findObject(new UiSelector().text(text));
         uiObject.waitForExists(6000);//等待按钮显示出来
@@ -218,10 +247,19 @@ public class TestBase {
 
     }
 
+     void setTextByResourceId(String resId,String text) throws Exception
+    {
+        UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
+        uiObject.waitForExists(6000);//等待按钮显示出来
+        uiObject.setText(text);
+        Thread.sleep(1500);
+        Log.d(TAG,"setTextByResourceId()->resId:"+resId + text);
+    }
+
     /**
      * 根据text字段判断是否存在，存在则点击
      * */
-    public UiObject clickByTextIfExists(String text) throws Exception{
+     UiObject clickByTextIfExists(String text) throws Exception{
         UiObject uiObject = null;
         uiObject = mDevice.findObject(new UiSelector().text(text));
         if (uiObject.waitForExists(3000)) {
@@ -237,7 +275,7 @@ public class TestBase {
     /**
      * 根据resourceId字段判断是否存在，存在则点击
      * */
-    public  void clickByResIdIfExists(String resId) throws  Exception
+      void clickByResIdIfExists(String resId) throws  Exception
     {
         UiObject img_know = mDevice.findObject(new UiSelector().resourceId(resId));
         if(img_know.exists()){
@@ -249,11 +287,11 @@ public class TestBase {
         Thread.sleep(1500);
     }
 
-    int steps = 20;
+
     /**
      * 上滑
      */
-    public void swipeToUp() throws InterruptedException {
+     void swipeToUp() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
         Log.d(TAG,"swipeToUp()------------------>");
@@ -264,18 +302,18 @@ public class TestBase {
     /**
      * 下滑
      */
-    public void swipeToDown() throws InterruptedException {
+     void swipeToDown() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
         Log.d(TAG,"swipeToDown()------------------>");
-        mDevice.swipe(width/2,height*1/4,width/2,height*3/4,steps);
+        mDevice.swipe(width/2,height/4,width/2,height*3/4,steps);
         Thread.sleep(1000);
     }
 
     /**
      * 左滑
      */
-    public void swipeToLeft() throws InterruptedException {
+     void swipeToLeft() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
         Log.d(TAG,"swipeToLeft()------------------>");
@@ -285,7 +323,7 @@ public class TestBase {
     /**
      * 右滑
      */
-    public void swipeToRight() throws InterruptedException {
+     void swipeToRight() throws InterruptedException {
         int width= mDevice.getDisplayWidth();
         int height=mDevice.getDisplayHeight();
         Log.d(TAG,"swipeToRight()------------------>");

@@ -7,6 +7,7 @@ import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.BySelector;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.Until;
@@ -14,6 +15,8 @@ import android.util.Log;
 
 import org.hamcrest.core.IsNull;
 import org.junit.Assert;
+
+import java.util.List;
 
 
 /**
@@ -193,6 +196,33 @@ public class TestBase {
     }
 
     /**
+     *
+     * */
+    void ClickByResourceNameAndIndex(String resId,int n) throws Exception
+       {
+        UiObject2 uiObject = mDevice.findObject(By.res(resId));
+        List<UiObject2> children = uiObject.getChildren();
+        if (children != null && children.size() > 0 && children.size() > n) {
+            children.get(n).click();
+            Thread.sleep(1500);
+        }
+
+    }
+
+    /**
+     *
+     * */
+    void ClickByResourceNameAndIndex(String resId,int n, String childResId) throws Exception
+    {
+        UiObject2 uiObject = mDevice.findObject(By.res(resId));
+        List<UiObject2> children = uiObject.getChildren();
+        if (children != null && children.size() > 0 && children.size() > n) {
+            children.get(n).findObject(By.res(childResId)).click();
+            Thread.sleep(1500);
+        }
+    }
+
+    /**
      * 根据ResourceId长按
      * */
     public void longClickByResourceId(String resId) throws Exception
@@ -247,13 +277,17 @@ public class TestBase {
 
     }
 
+    /**
+     * 根据ID确认控件，输入文本
+     * */
      void setTextByResourceId(String resId,String text) throws Exception
     {
         UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
         uiObject.waitForExists(6000);//等待按钮显示出来
+        Log.d(TAG,"setTextByResourceId()->resId:"+resId + text);
         uiObject.setText(text);
         Thread.sleep(1500);
-        Log.d(TAG,"setTextByResourceId()->resId:"+resId + text);
+
     }
 
     /**

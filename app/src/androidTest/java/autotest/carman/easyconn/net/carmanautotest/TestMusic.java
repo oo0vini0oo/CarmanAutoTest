@@ -34,11 +34,11 @@ public class TestMusic extends TestBase {
 
     @Test
     public void testCheckSwip() throws Exception{
-        clickByResIdIfExists("net.easyconn.carman:id/rl_cover_album");
+        clickByResourceId("net.easyconn.carman:id/rl_cover_album");
         Thread.sleep(2000);
         clickByResIdIfExists("net.easyconn.carman:id/img_know");
         //点击乐库
-        clickByResIdIfExists("net.easyconn.carman:id/tv_more");
+        clickByResourceId("net.easyconn.carman:id/tv_more");
         swipeToUp();
         Thread.sleep(2000);
         swipeToDown();
@@ -60,7 +60,7 @@ public class TestMusic extends TestBase {
         mDevice.waitForIdle(3000);
         clickByResIdIfExists("net.easyconn.carman:id/img_know");
         //点击乐库
-        clickByResIdIfExists("net.easyconn.carman:id/tv_more");
+        clickByResourceId("net.easyconn.carman:id/tv_more");
         Thread.sleep(1000);
         //点击收藏
         clickByText("收藏");

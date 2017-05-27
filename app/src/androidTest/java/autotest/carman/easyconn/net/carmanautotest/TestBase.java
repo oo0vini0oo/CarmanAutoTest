@@ -2,6 +2,7 @@ package autotest.carman.easyconn.net.carmanautotest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.BySelector;
@@ -151,6 +152,14 @@ public class TestBase {
             Log.d(TAG, "statement_ok button click .....");
             statement_ok.click();
         }
+
+        UiObject tv_cancel = mDevice.findObject(new UiSelector().resourceId("net.easyconn.carman:id/tv_cancel"));
+        mDevice.waitForIdle(3000);
+        if(tv_cancel.waitForExists(1000) && tv_cancel.exists())
+        {
+            Log.d(TAG, "tv_cancel button click .....");
+            tv_cancel.click();
+        }
     }
 
     /**
@@ -196,13 +205,15 @@ public class TestBase {
     }
 
     /**
-     *
+     * 根据整个控件id找第N个子控件，然后点击
+     * 用于地图搜索列表展示界面
      * */
-    void ClickByResourceNameAndIndex(String resId,int n) throws Exception
+    void clickByResourceIdAndIndex(String resId,int n) throws Exception
        {
         UiObject2 uiObject = mDevice.findObject(By.res(resId));
         List<UiObject2> children = uiObject.getChildren();
         if (children != null && children.size() > 0 && children.size() > n) {
+            Log.d(TAG,"clickByResourceIdAndIndex:"+resId+n);
             children.get(n).click();
             Thread.sleep(1500);
         }
@@ -210,26 +221,70 @@ public class TestBase {
     }
 
     /**
-     *
+     * 根据整个控件id找第N个子控件的子控件id进行点击
+     * 用于详细poi结果展示界面的收藏功能
      * */
-    void ClickByResourceNameAndIndex(String resId,int n, String childResId) throws Exception
+    void clickByResourceIdAndIndex(String resId,int n, String childResId) throws Exception
     {
         UiObject2 uiObject = mDevice.findObject(By.res(resId));
         List<UiObject2> children = uiObject.getChildren();
         if (children != null && children.size() > 0 && children.size() > n) {
+            Log.d(TAG,"clickByResourceIdAndIndex:"+resId+n);
             children.get(n).findObject(By.res(childResId)).click();
             Thread.sleep(1500);
         }
     }
 
     /**
+     * 根据整个控件id找第N个子控件的第N个子控件的进行点击
+     * 用于第三方应用列表长按后的删除功能
+     * */
+    void clickByResourceIdAndIndex(String resId,int n, int m) throws Exception
+    {
+        UiObject2 uiObject = mDevice.findObject(By.res(resId));
+        List<UiObject2> children = uiObject.getChildren();
+        if (children != null && children.size() > 0 && children.size() > n) {
+            Log.d(TAG,"clickByResourceIdAndIndex:"+resId+n);
+            children.get(n).getChildren().get(m).click();
+            Thread.sleep(1500);
+        }
+    }
+    /**
+     * 根据整个控件id找第N个子控件的子控件id进行点击
+     * 断言点击适应横屏后的开关状态是否符合预期
+     * 用于第三方应用长按后适应横屏功能
+     * */
+    void assertCheckButtonByResourceId(String resId,int n) throws Exception
+    {
+        UiObject2 uiObject = mDevice.findObject(By.res(resId));
+        List<UiObject2> children = uiObject.getChildren();
+        if (children != null && children.size() > 0 && children.size() > n) {
+            if (children.get(n).getChildren().get(3).getChildren().get(0).isChecked())
+            {
+                clickByResourceIdAndIndex(resId,n,3);
+                Thread.sleep(2000);
+                Assert.assertFalse("适应横屏关闭",children.get(n).getChildren().get(3).getChildren().get(0).isChecked());
+                Log.d(TAG,"适应横屏关闭:"+resId +"---------关闭");
+            }
+            else{
+                clickByResourceIdAndIndex(resId,n,3);
+                Thread.sleep(2000);
+                Assert.assertTrue("适应横屏打开",children.get(n).getChildren().get(3).getChildren().get(0).isChecked());
+                Log.d(TAG,"适应横屏打开:"+resId +"---------打开");
+            }
+        }
+    }
+
+
+
+    /**
      * 根据ResourceId长按
      * */
-    public void longClickByResourceId(String resId) throws Exception
+     void longClickByText(String text) throws Exception
     {
-        UiObject uiObject = mDevice.findObject(new UiSelector().resourceId(resId));
+        UiObject uiObject = mDevice.findObject(new UiSelector().text(text));
         uiObject.waitForExists(6000);//等待按钮显示出来
-        Log.d(TAG,"longClickByResourceId()->resId:"+resId);
+        Log.d(TAG,"longClickByName()->text:"+text);
         uiObject.longClick();
         Thread.sleep(1500);
     }
